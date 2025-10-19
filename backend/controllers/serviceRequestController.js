@@ -58,3 +58,36 @@ export const getAllServiceRequests = async (req, res) => {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
+
+
+// Add this new function to the bottom of serviceRequestController.js
+
+/**
+ * @desc    Update a service request's status
+ * @route   PUT /api/requests/:id
+ * @access  Private/Technician
+ */
+export const updateServiceRequestStatus = async (req, res) => {
+  try {
+    // Find the specific request by its ID, which comes from the URL parameter
+    const request = await ServiceRequest.findById(req.params.id);
+
+    if (request) {
+      // Update the status with the value sent in the request body
+      request.status = req.body.status || request.status;
+
+      // If the status is being set to 'Assigned' or 'InProgress',
+      // assign the currently logged-in technician to the request.
+      if (req.body.status === 'Assigned' || req.body.status === 'InProgress') {
+        request.technician = req.user._id;
+      }
+
+      const updatedRequest = await request.save();
+      res.json(updatedRequest);
+    } else {
+      res.status(404).json({ message: 'Service Request not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};

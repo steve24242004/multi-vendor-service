@@ -2,9 +2,10 @@ import express from 'express';
 import {
   createServiceRequest,
   getMyServiceRequests,
-  getAllServiceRequests, // 1. Import the new controller function
+  getAllServiceRequests,
+  updateServiceRequestStatus, // 1. Import the new controller function
 } from '../controllers/serviceRequestController.js';
-import { protect, technician } from '../middleware/authMiddleware.js'; // 2. Import the technician middleware
+import { protect, technician } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -12,11 +13,11 @@ const router = express.Router();
 router.post('/', protect, createServiceRequest);
 router.get('/myrequests', protect, getMyServiceRequests);
 
-// --- Technician Route ---
-// 3. Add the new route. Notice the middleware order:
-// First 'protect' runs to check if they are logged in.
-// If that passes, 'technician' runs to check their role.
-// If that passes, 'getAllServiceRequests' runs.
+// --- Technician Routes ---
 router.get('/', protect, technician, getAllServiceRequests);
+
+// 2. Add the new route for updating a request.
+// The ':id' is a placeholder for the actual ID of the request.
+router.put('/:id', protect, technician, updateServiceRequestStatus);
 
 export default router;

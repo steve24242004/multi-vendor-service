@@ -1,8 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
-// 1. Import the user routes we just created
 import userRoutes from './routes/userRoutes.js';
+import serviceRequestRoutes from './routes/serviceRequestRoutes.js';
 
 dotenv.config();
 connectDB();
@@ -21,6 +21,7 @@ app.get('/', (req, res) => {
 // for any URL that starts with '/api/users'.
 // So, our register route will be accessible at '/api/users/register'.
 app.use('/api/users', userRoutes);
+app.use('/api/requests', serviceRequestRoutes);
 
 const PORT = process.env.PORT || 5000;
 

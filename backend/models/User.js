@@ -24,13 +24,11 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt timestamps
+    timestamps: true,
   }
 );
 
-// Encrypt password before saving
 userSchema.pre('save', async function (next) {
-  // Only run this function if password was modified
   if (!this.isModified('password')) {
     return next();
   }
@@ -44,7 +42,6 @@ userSchema.pre('save', async function (next) {
   }
 });
 
-// Method to compare entered password with hashed password
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };

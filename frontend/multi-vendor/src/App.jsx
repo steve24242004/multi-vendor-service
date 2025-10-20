@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import AuthContext from './context/authContext';
 import AuthPage from './pages/authPage';
 import UserDashboard from './pages/UserDashboard';
-// 1. We IMPORT the real TechnicianDashboard from its own file.
 import TechnicianDashboard from './pages/TechnicianDashboard';
 
 const MainApp = () => {
@@ -25,13 +24,11 @@ const MainApp = () => {
         </nav>
       </header>
       <main className="container mx-auto px-6 py-8">
-        {/* 2. We USE the imported component here. The placeholder is gone. */}
         {user?.role === 'Technician' ? <TechnicianDashboard /> : <UserDashboard />}
       </main>
     </div>
   );
 };
-
 
 function App() {
   const { user } = useContext(AuthContext);

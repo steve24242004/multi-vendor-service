@@ -3,12 +3,10 @@ import ServiceRequestForm from '../components/serviceRequestForm';
 import RequestList from '../components/requestList';
 
 const UserDashboard = () => {
-  // This state is used to trigger a refresh of the RequestList
-  // when a new request is created in the form.
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const handleNewRequest = () => {
-    setRefreshTrigger(prev => prev + 1); // Increment to trigger effect
+    setRefreshTrigger(prev => prev + 1);
   };
 
   return (

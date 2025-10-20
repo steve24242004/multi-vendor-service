@@ -26,7 +26,6 @@ const serviceRequestSchema = new mongoose.Schema(
       enum: ['Pending', 'Assigned', 'InProgress', 'Completed', 'Cancelled'],
       default: 'Pending',
     },
-    // --- ADD THIS NEW FIELD ---
     severity: {
       type: String,
       enum: ['Low', 'Medium', 'High'],

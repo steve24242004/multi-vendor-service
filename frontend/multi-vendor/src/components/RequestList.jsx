@@ -12,7 +12,6 @@ const RequestList = ({ refreshTrigger }) => {
       setError('');
       try {
         const res = await axios.get('http://localhost:5000/api/requests/myrequests');
-        // Sort by most recent first
         const sortedRequests = res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setRequests(sortedRequests);
       } catch (err) {
@@ -22,7 +21,7 @@ const RequestList = ({ refreshTrigger }) => {
     };
 
     fetchRequests();
-  }, [refreshTrigger]); // Re-run this effect when refreshTrigger changes
+  }, [refreshTrigger]);
 
   const getStatusColor = (status) => {
     switch (status) {

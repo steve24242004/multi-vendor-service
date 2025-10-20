@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import AuthContext from '../context/authContext';
-// A simple debounce hook to prevent API calls on every keystroke
+
 const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
@@ -23,7 +23,7 @@ const ServiceRequestForm = ({ onNewRequest }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const debouncedDescription = useDebounce(description, 500); // 500ms delay
+  const debouncedDescription = useDebounce(description, 500);
 
   useEffect(() => {
     if (debouncedDescription.length > 10) {
@@ -36,7 +36,7 @@ const ServiceRequestForm = ({ onNewRequest }) => {
           });
           setPredictedSeverity(res.data.predictedSeverity);
         } catch (err) {
-          console.error('Failed to predict severity', err);
+          // Silently handle error
         }
         setLoadingSeverity(false);
       };
@@ -64,13 +64,11 @@ const ServiceRequestForm = ({ onNewRequest }) => {
     setLoading(true);
     setError('');
     try {
-      // Add 'severity: predictedSeverity' to the data being sent
       await axios.post('http://localhost:5000/api/requests', {
         category,
         description,
         severity: predictedSeverity,
       });
-      // Reset form and notify parent
       setDescription('');
       setCategory('Plumbing');
       setPredictedSeverity(null);

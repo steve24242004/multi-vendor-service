@@ -3,11 +3,17 @@ import {
   createServiceRequest,
   getMyServiceRequests,
   getAllServiceRequests,
-  updateServiceRequestStatus, // 1. Import the new controller function
+  updateServiceRequestStatus,
+  predictSeverity, // 1. Import the new AI controller function
 } from '../controllers/serviceRequestController.js';
 import { protect, technician } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
+
+// --- AI Route ---
+// 2. Add the route for the AI feature. It's protected so only logged-in users can use it.
+router.post('/predict-severity', protect, predictSeverity);
+
 
 // --- Customer Routes ---
 router.post('/', protect, createServiceRequest);
@@ -15,9 +21,7 @@ router.get('/myrequests', protect, getMyServiceRequests);
 
 // --- Technician Routes ---
 router.get('/', protect, technician, getAllServiceRequests);
-
-// 2. Add the new route for updating a request.
-// The ':id' is a placeholder for the actual ID of the request.
 router.put('/:id', protect, technician, updateServiceRequestStatus);
+
 
 export default router;

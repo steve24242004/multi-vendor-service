@@ -91,3 +91,56 @@ export const updateServiceRequestStatus = async (req, res) => {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
+
+// Add this new function to the bottom of your controller file.
+
+/**
+ * @desc    Predict the severity of a service request based on its description and category.
+ * @route   POST /api/requests/predict-severity
+ * @access  Private
+ */
+export const predictSeverity = async (req, res) => {
+  const { description, category } = req.body;
+
+  if (!description || !category) {
+    return res
+      .status(400)
+      .json({ message: 'Description and category are required.' });
+  }
+
+  const lowerCaseDescription = description.toLowerCase();
+  let predictedSeverity = 'Low'; // Default severity
+
+  // --- AI Keyword Logic ---
+  const severityKeywords = {
+    High: [
+      'fire', 'spark', 'gas', 'leak', 'burst', 'flood',
+      'smell', 'no power', 'emergency', 'urgent', 'explosion'
+    ],
+    Medium: [
+      'broken', 'not working', 'stopped', 'clogged',
+      'no hot water', 'major leak', 'faulty', 'stuck'
+    ],
+    Low: [
+      'dripping', 'noisy', 'flickering', 'loose',
+      'slow', 'minor', 'cosmetic', 'intermittent'
+    ],
+  };
+
+  // Check for High severity keywords first, as they are the most important.
+  if (severityKeywords.High.some(word => lowerCaseDescription.includes(word))) {
+    predictedSeverity = 'High';
+  }
+  // If not high, check for Medium severity.
+  else if (
+    severityKeywords.Medium.some(word => lowerCaseDescription.includes(word))
+  ) {
+    predictedSeverity = 'Medium';
+  }
+
+  // You could add more complex, category-specific logic here if you wanted.
+  // For example, "leak" in "Plumbing" might be Medium, but "leak" with "gas" is always High.
+  // For now, this general check is a great starting point.
+
+  res.json({ predictedSeverity });
+};

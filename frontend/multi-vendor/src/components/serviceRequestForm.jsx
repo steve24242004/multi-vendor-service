@@ -64,9 +64,11 @@ const ServiceRequestForm = ({ onNewRequest }) => {
     setLoading(true);
     setError('');
     try {
+      // Add 'severity: predictedSeverity' to the data being sent
       await axios.post('http://localhost:5000/api/requests', {
         category,
         description,
+        severity: predictedSeverity,
       });
       // Reset form and notify parent
       setDescription('');

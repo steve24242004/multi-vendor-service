@@ -5,11 +5,11 @@ const serviceRequestSchema = new mongoose.Schema(
     customer: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User', // Links to the User model
+      ref: 'User',
     },
     technician: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', // Links to the User model (optional, assigned later)
+      ref: 'User',
     },
     description: {
       type: String,
@@ -18,7 +18,6 @@ const serviceRequestSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      // You can expand this list later
       enum: ['Plumbing', 'Electrical', 'Appliance', 'Other'],
     },
     status: {
@@ -27,9 +26,15 @@ const serviceRequestSchema = new mongoose.Schema(
       enum: ['Pending', 'Assigned', 'InProgress', 'Completed', 'Cancelled'],
       default: 'Pending',
     },
+    // --- ADD THIS NEW FIELD ---
+    severity: {
+      type: String,
+      enum: ['Low', 'Medium', 'High'],
+      default: 'Low',
+    },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt timestamps
+    timestamps: true,
   }
 );
 

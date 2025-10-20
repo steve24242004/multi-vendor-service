@@ -6,13 +6,16 @@ import ServiceRequest from '../models/ServiceRequest.js';
  * @access  Private
  */
 export const createServiceRequest = async (req, res) => {
-  const { category, description } = req.body;
+  // 1. Get severity from the request body
+  const { category, description, severity } = req.body;
 
   try {
     const request = new ServiceRequest({
       customer: req.user._id,
       category,
       description,
+      // 2. Save the severity, defaulting to 'Low' if it's not provided
+      severity: severity || 'Low',
     });
 
     const createdRequest = await request.save();

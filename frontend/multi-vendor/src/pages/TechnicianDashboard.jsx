@@ -5,7 +5,7 @@ const TechnicianDashboard = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [filter, setFilter] = useState('All'); // 'All', 'Pending', 'Assigned', etc.
+  const [filter, setFilter] = useState('All');
 
   const fetchAllRequests = async () => {
     setLoading(true);
@@ -28,10 +28,9 @@ const TechnicianDashboard = () => {
       await axios.put(`http://localhost:5000/api/requests/${requestId}`, {
         status: newStatus,
       });
-      // Refresh the list after updating
       fetchAllRequests();
     } catch (err) {
-      alert('Failed to update status. Please try again.'); // Using a simple alert for now
+      alert('Failed to update status. Please try again.');
     }
   };
 
@@ -41,6 +40,15 @@ const TechnicianDashboard = () => {
       case 'Assigned': return 'bg-blue-100 text-blue-800';
       case 'InProgress': return 'bg-purple-100 text-purple-800';
       case 'Completed': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getSeverityColor = (severity) => {
+    switch (severity) {
+      case 'High': return 'bg-red-100 text-red-800';
+      case 'Medium': return 'bg-yellow-100 text-yellow-800';
+      case 'Low': return 'bg-blue-100 text-blue-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -76,6 +84,8 @@ const TechnicianDashboard = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                {/* --- 1. NEW TABLE HEADER --- */}
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Severity</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -86,6 +96,12 @@ const TechnicianDashboard = () => {
               {filteredRequests.map(req => (
                 <tr key={req._id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(req.createdAt).toLocaleDateString()}</td>
+                  {/* --- 2. NEW TABLE CELL TO DISPLAY SEVERITY --- */}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getSeverityColor(req.severity)}`}>
+                      {req.severity || 'Low'}
+                    </span>
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{req.category}</td>
                   <td className="px-6 py-4 max-w-sm text-sm text-gray-500 truncate">{req.description}</td>
                   <td className="px-6 py-4 whitespace-nowrap">

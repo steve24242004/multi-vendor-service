@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useContext } from 'react';
+import AuthContext from './context/authContext';
+import AuthPage from './pages/authPage';
+import UserDashboard from './pages/UserDashboard';
 
-function App() {
-  const [count, setCount] = useState(0)
+// A simple placeholder for the technician's view
+const TechnicianDashboard = () => (
+  <div>
+    <h2 className="text-xl font-semibold text-gray-700">Technician Dashboard</h2>
+    <p className="text-gray-600 mt-2">
+      This is where the technician will see and manage all service requests.
+    </p>
+  </div>
+);
+
+
+const MainApp = () => {
+  const { user, logout } = useContext(AuthContext);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="min-h-screen bg-gray-100 font-sans">
+      <header className="bg-white shadow">
+        <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">Fix4Ever</h1>
+            <p className="text-xs text-gray-500">Logged in as {user.email} ({user.role})</p>
+          </div>
+          <button
+            onClick={logout}
+            className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Logout
+          </button>
+        </nav>
+      </header>
+      <main className="container mx-auto px-6 py-8">
+        {user.role === 'Technician' ? <TechnicianDashboard /> : <UserDashboard />}
+      </main>
+    </div>
+  );
+};
+
+function App() {
+  const { user } = useContext(AuthContext);
+  return <>{user ? <MainApp /> : <AuthPage />}</>;
 }
 
-export default App
+export default App;

@@ -3,12 +3,15 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import serviceRequestRoutes from './routes/serviceRequestRoutes.js';
+import cors from 'cors';
+
 
 dotenv.config();
 connectDB();
 
 const app = express();
 
+app.use(cors());
 // 2. This is a crucial middleware that allows our server
 // to accept and parse JSON data in the request body.
 app.use(express.json());

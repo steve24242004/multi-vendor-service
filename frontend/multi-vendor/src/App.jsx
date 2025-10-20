@@ -2,17 +2,8 @@ import React, { useContext } from 'react';
 import AuthContext from './context/authContext';
 import AuthPage from './pages/authPage';
 import UserDashboard from './pages/UserDashboard';
-
-// A simple placeholder for the technician's view
-const TechnicianDashboard = () => (
-  <div>
-    <h2 className="text-xl font-semibold text-gray-700">Technician Dashboard</h2>
-    <p className="text-gray-600 mt-2">
-      This is where the technician will see and manage all service requests.
-    </p>
-  </div>
-);
-
+// 1. We IMPORT the real TechnicianDashboard from its own file.
+import TechnicianDashboard from './pages/TechnicianDashboard';
 
 const MainApp = () => {
   const { user, logout } = useContext(AuthContext);
@@ -23,7 +14,7 @@ const MainApp = () => {
         <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold text-gray-800">Fix4Ever</h1>
-            <p className="text-xs text-gray-500">Logged in as {user.email} ({user.role})</p>
+            {user && <p className="text-xs text-gray-500">Logged in as {user.email} ({user.role})</p>}
           </div>
           <button
             onClick={logout}
@@ -34,11 +25,13 @@ const MainApp = () => {
         </nav>
       </header>
       <main className="container mx-auto px-6 py-8">
-        {user.role === 'Technician' ? <TechnicianDashboard /> : <UserDashboard />}
+        {/* 2. We USE the imported component here. The placeholder is gone. */}
+        {user?.role === 'Technician' ? <TechnicianDashboard /> : <UserDashboard />}
       </main>
     </div>
   );
 };
+
 
 function App() {
   const { user } = useContext(AuthContext);

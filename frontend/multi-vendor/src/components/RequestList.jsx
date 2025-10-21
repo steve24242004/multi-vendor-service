@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const RequestList = ({ refreshTrigger }) => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +13,7 @@ const RequestList = ({ refreshTrigger }) => {
       setLoading(true);
       setError('');
       try {
-        const res = await axios.get('http://localhost:5000/api/requests/myrequests');
+        const res = await axios.get(`${API_URL}/api/requests/myrequests`);
         const sortedRequests = res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setRequests(sortedRequests);
       } catch (err) {

@@ -1,3 +1,4 @@
 /backend/node_modules
 /frontend/multi-vendor/node_modules
 /backend/.env
+/frontend/multi-vendor/.env

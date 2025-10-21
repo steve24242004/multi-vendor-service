@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import AuthContext from '../context/authContext';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
@@ -30,7 +32,7 @@ const ServiceRequestForm = ({ onNewRequest }) => {
       const fetchSeverity = async () => {
         setLoadingSeverity(true);
         try {
-          const res = await axios.post('http://localhost:5000/api/requests/predict-severity', {
+          const res = await axios.post(`${API_URL}/api/requests/predict-severity`, {
             description: debouncedDescription,
             category,
           });
@@ -64,7 +66,7 @@ const ServiceRequestForm = ({ onNewRequest }) => {
     setLoading(true);
     setError('');
     try {
-      await axios.post('http://localhost:5000/api/requests', {
+      await axios.post(`${API_URL}/api/requests`, {
         category,
         description,
         severity: predictedSeverity,

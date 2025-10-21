@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const TechnicianDashboard = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +12,7 @@ const TechnicianDashboard = () => {
   const fetchAllRequests = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get('http://localhost:5000/api/requests');
+      const { data } = await axios.get(`${API_URL}/api/requests`);
       const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setRequests(sortedData);
     } catch (err) {
@@ -25,7 +27,7 @@ const TechnicianDashboard = () => {
 
   const handleStatusChange = async (requestId, newStatus) => {
     try {
-      await axios.put(`http://localhost:5000/api/requests/${requestId}`, {
+      await axios.put(`${API_URL}/api/requests/${requestId}`, {
         status: newStatus,
       });
       fetchAllRequests();

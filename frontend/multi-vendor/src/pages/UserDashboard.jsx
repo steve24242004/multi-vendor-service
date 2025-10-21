@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ServiceRequestForm from '../components/serviceRequestForm';
-import RequestList from '../components/requestList';
+import RequestList from '../components/RequestList';
 
 const UserDashboard = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);

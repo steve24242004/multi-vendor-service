@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const res = await axios.post(`${API_URL}/api/users/login`, {
+    const res = await axios.post(`${API_URL}api/users/login`, {
       email,
       password,
     });
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
-    const res = await axios.post(`${API_URL}/api/users/register`, {
+    const res = await axios.post(`${API_URL}api/users/register`, {
       name,
       email,
       password,

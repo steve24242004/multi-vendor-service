@@ -32,7 +32,7 @@ const ServiceRequestForm = ({ onNewRequest }) => {
       const fetchSeverity = async () => {
         setLoadingSeverity(true);
         try {
-          const res = await axios.post(`${API_URL}/api/requests/predict-severity`, {
+          const res = await axios.post(`${API_URL}api/requests/predict-severity`, {
             description: debouncedDescription,
             category,
           });
@@ -66,7 +66,7 @@ const ServiceRequestForm = ({ onNewRequest }) => {
     setLoading(true);
     setError('');
     try {
-      await axios.post(`${API_URL}/api/requests`, {
+      await axios.post(`${API_URL}api/requests`, {
         category,
         description,
         severity: predictedSeverity,

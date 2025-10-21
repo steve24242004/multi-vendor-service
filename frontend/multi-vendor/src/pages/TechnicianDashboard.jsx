@@ -12,7 +12,7 @@ const TechnicianDashboard = () => {
   const fetchAllRequests = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(`${API_URL}/api/requests`);
+      const { data } = await axios.get(`${API_URL}api/requests`);
       const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setRequests(sortedData);
     } catch (err) {
@@ -27,7 +27,7 @@ const TechnicianDashboard = () => {
 
   const handleStatusChange = async (requestId, newStatus) => {
     try {
-      await axios.put(`${API_URL}/api/requests/${requestId}`, {
+      await axios.put(`${API_URL}api/requests/${requestId}`, {
         status: newStatus,
       });
       fetchAllRequests();
